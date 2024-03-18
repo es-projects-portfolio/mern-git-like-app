@@ -3,10 +3,11 @@ import { IoHomeSharp } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
 import { MdEditDocument, MdOutlineExplore } from "react-icons/md"
 import { PiSignInBold } from "react-icons/pi";
+import { useAuthContext } from "../context/AuthContext";
 import Logout from "./Logout";
 
 const Sidebar = () => {
-    const authUser = true;
+    const {authUser} = useAuthContext();
 
     return (
         <aside
