@@ -21,10 +21,14 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Extract Tag
+      id: extract_tag
+      run: echo ::set-output name=TAG::$(echo $GITHUB_REF | awk -F '/' '{print $NF}')
+
     - name: Build and Dockerize
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:${{ github.ref }} .
-        docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:${{ github.ref }}
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:${{ steps.extract_tag.outputs.TAG }} .
+        docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:${{ steps.extract_tag.outputs.TAG }}
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
